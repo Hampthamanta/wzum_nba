@@ -260,7 +260,42 @@ def fill_teams_data_rookie():
     print("Zapisano do nba_basic_stats_rookie.csv")
 
 
+def calculate_correlations(df ,top=20):
+    target='result_top_five'
+
+    # Wybierz tylko kolumny numeryczne
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    
+    # Usuń z cech identyfikatory i wynik
+    exclude = ['PLAYER_ID', 'SEASON', target]
+    features = [col for col in numeric_cols if col not in exclude]
+    
+    # Wylicz korelacje
+    corr = df[features + [target]].corr()[target].drop(target)
+    
+    # Posortuj malejąco po wartości bezwzględnej
+    corr_sorted = corr.abs().sort_values(ascending=False)
+    
+    # Wyświetl top cech (lub wszystkie jeśli top=None)
+    if top is not None:
+        print(corr_sorted.head(top))
+    else:
+        print(corr_sorted)
+    
+    return corr_sorted
+
+
 
 if __name__ == "__main__":
     print('Przygotowanie danych NBA')
 
+
+    if 0:
+        download_season()
+        download_results()
+        merge_seasons()
+        fill_results()
+        separate_rooke()
+        download_teams_stats()
+        fill_teams_data_allnba()
+        fill_teams_data_rookie()
