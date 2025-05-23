@@ -1,0 +1,70 @@
+| Nazwa kolumny                | Opis                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| **PLAYER_ID**                | Unikalny identyfikator zawodnika (stały w NBA, liczba)                                     |
+| **PLAYER_NAME**              | Imię i nazwisko zawodnika (np. "LeBron James")                                             |
+| **NICKNAME**                 | Ksywka lub krótsza forma imienia, używana np. w statystykach                               |
+| **TEAM_ID**                  | Unikalny identyfikator drużyny, do której zawodnik należy w tym sezonie                    |
+| **TEAM_ABBREVIATION**        | Skrót drużyny (np. "LAL" dla Los Angeles Lakers)                                           |
+| **AGE**                      | Wiek zawodnika w danym sezonie (lata, float – nie zawsze całkowite liczby)                 |
+| **GP**                       | Liczba rozegranych meczów w sezonie                                                        |
+| **W**                        | Liczba wygranych drużyny, gdy zawodnik grał                                                |
+| **L**                        | Liczba przegranych drużyny, gdy zawodnik grał                                              |
+| **W_PCT**                    | Procent zwycięstw z udziałem zawodnika                                                     |
+| **MIN**                      | Minuty spędzone na boisku (łącznie w sezonie)                                              |
+| **FGM**                      | Liczba celnych rzutów z gry (Field Goals Made)                                             |
+| **FGA**                      | Liczba oddanych rzutów z gry (Field Goals Attempted)                                       |
+| **FG_PCT**                   | Skuteczność rzutów z gry (procent)                                                         |
+| **FG3M**                     | Liczba celnych rzutów za 3 punkty (Three-Point Field Goals Made)                           |
+| **FG3A**                     | Liczba oddanych rzutów za 3 punkty                                                         |
+| **FG3_PCT**                  | Skuteczność rzutów za 3 punkty (procent)                                                   |
+| **FTM**                      | Liczba celnych rzutów wolnych (Free Throws Made)                                           |
+| **FTA**                      | Liczba oddanych rzutów wolnych (Free Throws Attempted)                                     |
+| **FT_PCT**                   | Skuteczność rzutów wolnych (procent)                                                       |
+| **OREB**                     | Liczba zbiórek w ataku (Offensive Rebounds)                                                |
+| **DREB**                     | Liczba zbiórek w obronie (Defensive Rebounds)                                              |
+| **REB**                      | Łączna liczba zbiórek (OREB + DREB)                                                        |
+| **AST**                      | Liczba asyst                                                                               |
+| **TOV**                      | Liczba strat (Turnovers)                                                                   |
+| **STL**                      | Liczba przechwytów (Steals)                                                                |
+| **BLK**                      | Liczba bloków (Blocks)                                                                     |
+| **BLKA**                     | Liczba razy, kiedy rzut zawodnika został zablokowany ("Blocked Against")                   |
+| **PF**                       | Liczba fauli osobistych (Personal Fouls)                                                   |
+| **PFD**                      | Liczba wymuszonych fauli (Personal Fouls Drawn)                                            |
+| **PTS**                      | Liczba zdobytych punktów                                                                   |
+| **PLUS_MINUS**               | Różnica punktów drużyny, gdy zawodnik był na boisku                                        |
+| **NBA_FANTASY_PTS**          | Punkty fantasy (wg zasad NBA Fantasy – punkty dla gracza w ligach fantasy)                 |
+| **DD2**                      | Double-Double: Liczba meczów z dwucyfrowymi wynikami w dwóch statystykach                  |
+| **TD3**                      | Triple-Double: Liczba meczów z dwucyfrowymi wynikami w trzech statystykach                 |
+| **WNBA_FANTASY_PTS**         | Fantasy points wg zasad WNBA (czasem zerowe, jeśli plik dotyczy tylko NBA)                 |
+| **GP_RANK**                  | Pozycja (ranking) zawodnika pod względem rozegranych meczów w sezonie                      |
+| **W_RANK**                   | Pozycja w rankingu liczby zwycięstw                                                        |
+| **L_RANK**                   | Pozycja w rankingu liczby porażek                                                          |
+| **W_PCT_RANK**               | Pozycja w rankingu procentu zwycięstw                                                      |
+| **MIN_RANK**                 | Ranking liczby minut na boisku                                                             |
+| **FGM_RANK**                 | Ranking liczby celnych rzutów z gry                                                        |
+| **FGA_RANK**                 | Ranking liczby oddanych rzutów z gry                                                       |
+| **FG_PCT_RANK**              | Ranking skuteczności rzutów z gry                                                          |
+| **FG3M_RANK**                | Ranking liczby celnych rzutów za 3 punkty                                                  |
+| **FG3A_RANK**                | Ranking liczby rzutów za 3 punkty                                                          |
+| **FG3_PCT_RANK**             | Ranking skuteczności za 3 punkty                                                           |
+| **FTM_RANK**                 | Ranking liczby celnych rzutów wolnych                                                      |
+| **FTA_RANK**                 | Ranking liczby rzutów wolnych                                                              |
+| **FT_PCT_RANK**              | Ranking skuteczności rzutów wolnych                                                        |
+| **OREB_RANK**                | Ranking liczby zbiórek w ataku                                                             |
+| **DREB_RANK**                | Ranking liczby zbiórek w obronie                                                           |
+| **REB_RANK**                 | Ranking liczby zbiórek ogółem                                                              |
+| **AST_RANK**                 | Ranking liczby asyst                                                                       |
+| **TOV_RANK**                 | Ranking liczby strat                                                                       |
+| **STL_RANK**                 | Ranking liczby przechwytów                                                                 |
+| **BLK_RANK**                 | Ranking liczby bloków                                                                      |
+| **BLKA_RANK**                | Ranking liczby blokowanych rzutów przeciwko                                                |
+| **PF_RANK**                  | Ranking liczby fauli osobistych                                                            |
+| **PFD_RANK**                 | Ranking liczby wymuszonych fauli                                                           |
+| **PTS_RANK**                 | Ranking liczby zdobytych punktów                                                           |
+| **PLUS_MINUS_RANK**          | Ranking współczynnika plus/minus                                                           |
+| **NBA_FANTASY_PTS_RANK**     | Ranking punktów fantasy (NBA)                                                              |
+| **DD2_RANK**                 | Ranking liczby double-doubles                                                              |
+| **TD3_RANK**                 | Ranking liczby triple-doubles                                                              |
+| **WNBA_FANTASY_PTS_RANK**    | Ranking punktów fantasy (WNBA)                                                             |
+| **SEASON**                   | Rok sezonu (np. 2011 = sezon 2010/2011, liczba)                                            |
+| **result_top_five**          | Oznaczenie, czy gracz był w All-NBA/All-Rookie (1=1st team, 2=2nd team, 3=3rd team, 0=nie) |
