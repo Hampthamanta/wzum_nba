@@ -1,4 +1,5 @@
-from nba_api.stats.endpoints import LeagueDashPlayerStats, LeagueStandings
+from nba_api.stats.endpoints import LeagueDashPlayerStats, LeagueStandings, commonplayerinfo
+from nba_api.stats.static import players
 import pandas as pd
 import glob
 import re
@@ -260,6 +261,28 @@ def fill_teams_data_rookie():
     print("Zapisano do nba_basic_stats_rookie.csv")
 
 
+def add_positions():
+    def get_position_for_player(player_id):
+        info = commonplayerinfo.CommonPlayerInfo(player_id=player_id).get_normalized_dict()
+        pos = info['CommonPlayerInfo'][0]['POSITION']
+        return pos
+
+    # Dla wszystkich unikalnych PLAYER_ID:
+    df = pd.read_csv('nba_basic_stats_allnba.csv')
+    unique_ids = df['PLAYER_ID'].unique()
+    positions = {}
+    for pid in unique_ids:
+        try:
+            positions[pid] = get_position_for_player(pid)
+        except Exception as e:
+            positions[pid] = None
+
+    # Przypisz do DataFrame
+    df['POSITION'] = df['PLAYER_ID'].map(positions)
+    df.to_csv('nba_basic_stats_allnba_with_position.csv', index=False)
+
+
+
 def calculate_correlations(df ,top=20):
     target='result_top_five'
 
@@ -283,11 +306,13 @@ def calculate_correlations(df ,top=20):
         print(corr_sorted)
     
     return corr_sorted
-
+    
 
 
 if __name__ == "__main__":
     print('Przygotowanie danych NBA')
+
+    add_positions()
 
 
     if 0:
