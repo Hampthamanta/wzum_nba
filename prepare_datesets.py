@@ -22,7 +22,7 @@ def download_results():
     # ALLNBA
     df = pd.read_html('https://www.basketball-reference.com/awards/all_league.html')[0]
 
-    seasons = [f"{year-1}-{str(year)[-2:]}" for year in range(2011, 2025)]  # 2010-11, ..., 2023-24
+    seasons = [f"{year-1}-{str(year)[-2:]}" for year in range(2011, 2026)]  # 2010-11, ..., 2023-24
     df = df[df['Season'].isin(seasons)]
 
     df.to_csv('allnba_teams_2011-2024.csv', index=False)
@@ -32,7 +32,7 @@ def download_results():
     df = pd.read_html('https://www.basketball-reference.com/awards/all_rookie.html')[0]
 
     # Filtrowanie tylko sezonów 2011-2024
-    seasons = [f"{year-1}-{str(year)[-2:]}" for year in range(2011, 2025)]
+    seasons = [f"{year-1}-{str(year)[-2:]}" for year in range(2011, 2026)]
     df = df[df['Season'].isin(seasons)]
 
     df.to_csv('rookie_teams_2011-2024.csv', index=False)
@@ -309,11 +309,108 @@ def calculate_correlations(df ,top=20):
     
 
 
+def download_advanced_stats(start_season=2011, end_season=2025, sleep_sec=2):
+    all_dfs = []
+    for year in range(start_season, end_season+1):
+        url = f"https://www.basketball-reference.com/leagues/NBA_{year}_advanced.html"
+        print(f"Pobieram: {url}")
+        try:
+            df = pd.read_html(url, header=0)[0]
+            # Często ostatni wiersz to "Totals" – wywalamy go
+            df = df[df['Player'] != 'Player']
+            df['Season'] = f"{year-1}-{str(year)[-2:]}"
+            all_dfs.append(df)
+            # Zapisz pojedynczy sezon do pliku:
+            df.to_csv(f"nba_advanced_{year}.csv", index=False)
+            print(f"Zapisano: nba_advanced_{year}.csv")
+        except Exception as e:
+            print(f"Błąd pobierania {url}: {e}")
+        time.sleep(sleep_sec)  # Nie za szybko żeby nie blokowali
+
+    # Łączymy wszystkie w jeden DataFrame
+    if all_dfs:
+        df_all = pd.concat(all_dfs, ignore_index=True)
+        df_all.to_csv("nba_advanced_2011-2025.csv", index=False)
+        print("Zapisano pełny zbiór: nba_advanced_2011-2025.csv")
+    return
+
+
+
+def add_advanced_stats(who='allnba'):
+    import pandas as pd
+
+    # Wczytaj oba pliki
+    basic = pd.read_csv(f"nba_basic_stats_{who}.csv")
+    adv = pd.read_csv("nba_advanced_2011-2025.csv")
+
+    # 1. Przerób SEASON w pliku basic na sezon w formacie 2024-25, 2023-24 itd.
+    def season_int_to_str(season):
+        season = int(season)
+        return f"{season-1}-{str(season)[-2:]}"
+
+    basic["Season"] = basic["SEASON"].apply(season_int_to_str)
+
+    # 2. Przygotuj klucz łączący (NAME, SEASON)
+    def simplify_name(x):
+        return (
+            str(x)
+            .replace('.', '')
+            .replace('-', '')
+            .replace("’", "'")
+            .replace('`', "'")
+            .replace('’', "'")
+            .replace("’", "'")
+            .replace(",", "")
+            .replace(" Jr", "")
+            .replace(" II", "")
+            .replace(" III", "")
+            .replace(" IV", "")
+            .replace(" V", "")
+            .lower()
+            .strip()
+        )
+
+    basic['match_name'] = basic['PLAYER_NAME'].apply(simplify_name)
+    adv['match_name'] = adv['Player'].apply(simplify_name)
+
+    # Drop duplikaty po nazwie i sezonie (bez wieku!)
+    adv = adv.drop_duplicates(subset=['match_name', 'Season'], keep='first')
+
+    # 3. Merge (join) po uproszczonym nazwisku i sezonie!
+    joined = pd.merge(
+        basic,
+        adv,
+        left_on=['match_name', 'Season'],
+        right_on=['match_name', 'Season'],
+        suffixes=('_basic', '_adv'),
+        how='inner'
+    )
+
+    # 4. Wybierz wszystkie cechy z pliku 1 + tylko te wybrane z pliku 2:
+    adv_features = [
+        'Pos', 'PER', 'TS%', '3PAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%',
+        'STL%', 'BLK%', 'TOV%', 'USG%', 'OWS', 'DWS', 'WS', 'WS/48',
+        'OBPM', 'DBPM', 'BPM', 'VORP'
+    ]
+    final_cols = list(basic.columns) + [col for col in adv_features if col in adv.columns]
+
+    # Zachowaj tylko te kolumny:
+    final = joined[final_cols]
+    final = final.drop(columns=['Season', 'match_name'], errors='ignore')
+
+    # Zapisz wynik
+    final.to_csv(f"nba_{who}_allstats.csv", index=False)
+    print(f"Zapisano do nba_{who}_allstats.csv")
+
+
+
+
+
 if __name__ == "__main__":
     print('Przygotowanie danych NBA')
 
-    add_positions()
-
+    # download_advanced_stats(start_season=2011, end_season=2025, sleep_sec=2)
+    add_advanced_stats(who='allnba')
 
     if 0:
         download_season()

@@ -27,6 +27,9 @@ from prepare_datesets import calculate_correlations
 from nba_utilities import show_played_games, show_heatmap
 
 
+### Dla ALLNBA filtrować po pozycjach na C, F, G
+### Dla ROOKIE zostawić wszystkie pozycje
+
 
 
 def split_train_test(df, test_season=2023):
@@ -62,6 +65,18 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2023):
     ]
     df_data = df_.drop(useless_to_model, axis=1)
 
+    # if who == 'ROOKIE':
+    #     df_data = df_data.drop(columns=['Pos'])
+    # else:
+    #     allowed_pos = ['F', 'C', 'G']
+    #     df_data = df_data[df_data['Pos'].isin(allowed_pos)].copy()
+    #     pos_dict = {'F': 1, 'C': 2, 'G': 3}
+    #     df_data['Pos'] = df_data['Pos'].map(pos_dict)
+    df_data = df_data.drop(columns=['Pos'])
+
+    if who == 'ALLNBA':
+        df_data = df_data.drop(columns=['PER','TS%','3PAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','OWS','DWS','WS','WS/48','OBPM','DBPM','BPM','VORP'])
+
     # Zamiana danych float na int
     float_cols = [col for col in df_data.select_dtypes(include=['float']).columns if col != t_pname]
     df_data[float_cols] = df_data[float_cols].astype(int)
@@ -91,32 +106,37 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2023):
         RS = random.randint(1, 100)
         n_estimators = random.randint(50,500)
 
-        # models.append(RandomForestClassifier(random_state=RS, n_estimators=n_estimators))
+        models.append(RandomForestClassifier(random_state=RS, n_estimators=n_estimators))
         models.append(LogisticRegression(random_state=RS, solver='lbfgs', max_iter=1000))
         models.append(KNeighborsClassifier(n_neighbors=12, weights='distance', metric='euclidean'))
-        # models.append(KNeighborsClassifier(n_neighbors=12, weights='distance', metric='manhattan'))
-        # models.append(MLPClassifier(hidden_layer_sizes=(120, 60, 30), activation='relu', solver='lbfgs', max_iter=1000, random_state=RS))
+        models.append(KNeighborsClassifier(n_neighbors=12, weights='distance', metric='manhattan'))
+        models.append(MLPClassifier(hidden_layer_sizes=(120, 60, 30), activation='relu', solver='lbfgs', max_iter=1000, random_state=RS))
         models.append(MLPClassifier(hidden_layer_sizes=(120, 60), activation='tanh', solver='lbfgs', alpha=0.001, max_iter=1000, random_state=RS, early_stopping=True))
         models.append(MLPClassifier(hidden_layer_sizes=(120, 60), activation='relu', solver='lbfgs', max_iter=1000, random_state=RS))
         models.append(AdaBoostClassifier(random_state=RS, n_estimators=n_estimators, learning_rate=0.95))
         models.append(AdaBoostClassifier(random_state=RS, n_estimators=n_estimators, learning_rate=1.0))
-        # models.append(AdaBoostClassifier(random_state=RS, n_estimators=n_estimators, learning_rate=1.1))
-        # models.append(GradientBoostingClassifier(random_state=RS, n_estimators=n_estimators))
+        models.append(AdaBoostClassifier(random_state=RS, n_estimators=n_estimators, learning_rate=1.1))
+        models.append(GradientBoostingClassifier(random_state=RS, n_estimators=n_estimators))
 
 
     for k in range(5):
         RS = random.randint(1, 100)
         n_estimators = random.randint(50,500)
-        # models.append(LogisticRegression(random_state=RS, solver='lbfgs', max_iter=1000))
-        models.append(MLPClassifier(hidden_layer_sizes=(120, 60), activation='tanh', solver='lbfgs', alpha=0.001, max_iter=1000, random_state=RS, early_stopping=True))
-        models.append(MLPClassifier(hidden_layer_sizes=(120, 60), activation='relu', solver='lbfgs', max_iter=1000, random_state=RS))
+        n1 = random.randint(120, 140)
+        n2 = random.randint(60, 80)
+        alpha1 = random.uniform(0.001, 0.01)
+        alpha2 = random.uniform(0.01, 0.1)
+        models.append(LogisticRegression(random_state=RS, solver='lbfgs', max_iter=1000))
+        models.append(MLPClassifier(hidden_layer_sizes=(n1, n2), activation='tanh', solver='lbfgs', alpha=alpha1, max_iter=1000, random_state=RS, early_stopping=True))
+        models.append(MLPClassifier(hidden_layer_sizes=(n1, n2), activation='tanh', solver='lbfgs', alpha=alpha2, max_iter=1000, random_state=RS, early_stopping=True))
+        models.append(MLPClassifier(hidden_layer_sizes=(n1, n2), activation='relu', solver='lbfgs', max_iter=1000, random_state=RS))
         models.append(AdaBoostClassifier(random_state=RS, n_estimators=n_estimators, learning_rate=1.0))
         
         
-    # for k in range(10):
-    #     RS = random.randint(1, 100)
-    #     n_estimators = random.randint(80,800)
-    #     models.append(RandomForestClassifier(random_state=RS, n_estimators=n_estimators))
+    # for k in range(3):
+        RS = random.randint(1, 100)
+        n_estimators = random.randint(80,800)
+        models.append(RandomForestClassifier(random_state=RS, n_estimators=n_estimators))
 
 
     
@@ -133,7 +153,7 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2023):
                 votes_for_first_team[player_name] = votes_for_first_team.get(player_name,0) + 1
             elif pred == 2:
                 votes_for_second_team[player_name] = votes_for_second_team.get(player_name,0) + 1
-            elif pred == 3:
+            elif pred == 3 and who == 'ALLNBA':
                 votes_for_third_team[player_name] = votes_for_third_team.get(player_name,0) + 1
 
 
@@ -158,20 +178,22 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2023):
             second_team.append(name)
             players_in_team.add(name)
  
-    for name, votes in votes_for_third_team:
-        if name not in players_in_team and len(third_team) < 5:
-            third_team.append(name)
-            players_in_team.add(name)
+    if who == 'ALLNBA':
+        for name, votes in votes_for_third_team:
+            if name not in players_in_team and len(third_team) < 5:
+                third_team.append(name)
+                players_in_team.add(name)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
     minutes = int(elapsed_time // 60)
     seconds = elapsed_time % 60
-    print(f'Czas wykonania: {minutes:.2f} min {seconds:.2f} s')
+    print(f'Czas wykonania {who}: {minutes:.2f} min {seconds:.2f} s')
 
     print("First team:", first_team)
     print("Second team:", second_team)
-    print("Third team:", third_team)
+    if who == 'ALLNBA':
+        print("Third team:", third_team)
 
     ################## WERYFIKACJA ##################
 
@@ -179,34 +201,48 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2023):
     print('Real votes for First team:')
     real_votes_for_first_team = df_test[df_test[target] == 1][t_pname].values
     real_votes_for_second_team = df_test[df_test[target] == 2][t_pname].values
-    real_votes_for_third_team = df_test[df_test[target] == 3][t_pname].values
+    if who == 'ALLNBA':
+        real_votes_for_third_team = df_test[df_test[target] == 3][t_pname].values
 
     check_first_team = set(first_team) & set(real_votes_for_first_team)
     check_second_team = set(second_team) & set(real_votes_for_second_team)
-    check_third_team = set(third_team) & set(real_votes_for_third_team)
+    if who == 'ALLNBA':
+        check_third_team = set(third_team) & set(real_votes_for_third_team)
     
-    print(f'Pierwsza piatka zgadniętych = {len(check_first_team)}')
-    print(f'Druga piatka zgadniętych = {len(check_second_team)}')
-    print(f'Trzecia piatka zgadniętych = {len(check_third_team)}')
+    print(f'Pierwsza piatka {who} zgadniętych = {len(check_first_team)}')
+    print(f'Druga piatka {who} zgadniętych = {len(check_second_team)}')
+    if who == 'ALLNBA':
+        print(f'Trzecia piatka {who} zgadniętych = {len(check_third_team)}')
+
+    if who == 'ALLNBA':
+        model_result = (len(check_first_team) + len(check_second_team) + len(check_third_team)) / 15
+    else:
+        model_result = (len(check_first_team) + len(check_second_team)) / 10
 
 
-    ################## CZY ZAPISAĆ MODEL ##################
-    save_model = input('Czy zapisać model? (y/n): ')
-    if save_model == 'y':
-        with open(f'models/models_{time.strftime("%Y-%m-%d")}.pkl', 'wb') as f:
-            pickle.dump(models, f)
+    return model_result, models
 
 
 
 
 def main():
-    df_rookie = pd.read_csv('nba_basic_stats_rookie.csv')
-    df_allnba = pd.read_csv('nba_basic_stats_allnba.csv')
+    df_rookie = pd.read_csv('nba_rookie_allstats.csv')
+    df_allnba = pd.read_csv('nba_allnba_allstats.csv')
 
     print('ALLNBA')
-    perpare_and_train(df_=df_allnba, who='ALLNBA', test_season=2022)
+    result_allnba, models_allnba = perpare_and_train(df_=df_allnba, who='ALLNBA', test_season=2022)
     print('\n\nROOKIE')
-    # perpare_and_train(df_=df_rookie, who='ROOKIE', test_season=2023)
+    result_rookie, models_rookie = perpare_and_train(df_=df_rookie, who='ROOKIE', test_season=2023)
+
+    print(f'Wynik modeli: {(result_allnba + result_rookie) / 2:.2f}%')
+
+    ################## CZY ZAPISAĆ MODEL ##################
+    save_model = input(f'Czy zapisać modele? (y/n): ')
+    if save_model == 'y':
+        with open(f'models/models_allnba_r{result_allnba:.2f}%_{time.strftime("%Y-%m-%d")}.pkl', 'wb') as f:
+            pickle.dump(models_allnba, f)
+        with open(f'models/models_rookie_r{result_rookie:.2f}%_{time.strftime("%Y-%m-%d")}.pkl', 'wb') as f:
+            pickle.dump(models_rookie, f)
 
     # show_played_games(df_allnba)
 
