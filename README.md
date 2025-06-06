@@ -59,69 +59,155 @@ Druga piatka ROOKIE zgadniętych = 4
 Poniżej znajduje się porównaine macierzy pomyłek dla róznych wykorzystyanych modeli.  
 
 <!-- CatBoost dla ALLNBA i ROOKIE -->
-<p>
-  <img src="res/CatBoostClassifier_1.png" width="32%" style="display:inline-block;"/>
-  <img src="res/CatBoostClassifier_2.png" width="32%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/CatBoostClassifier_1.png" width="100%"/><br>
+      <b>CatBoost ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/CatBoostClassifier_2.png" width="100%"/><br>
+      <b>CatBoost ROOKIE</b>
+    </td>
+  </tr>
+</table>
 
 <!-- RandomForest dla ALLNBA i ROOKIE -->
-<p>
-  <img src="res/RF_1.png" width="48%" style="display:inline-block;"/>
-  <img src="res/RF_2.png" width="48%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/RF_1.png" width="100%"/><br>
+      <b>RandomForest ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/RF_2.png" width="100%"/><br>
+      <b>RandomForest ROOKIE</b>
+    </td>
+  </tr>
+</table>
 
 <!-- LogisticRegression dla ALLNBA i ROOKIE -->
-<p>
-  <img src="res/LogisticRegression_1.png" width="48%" style="display:inline-block;"/>
-  <img src="res/LogisticRegression_2.png" width="48%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/LogisticRegression_1.png" width="100%"/><br>
+      <b>LogisticRegression ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/LogisticRegression_2.png" width="100%"/><br>
+      <b>LogisticRegression ROOKIE</b>
+    </td>
+  </tr>
+</table>
+
 
 <!-- MLPClassifier dla ALLNBA -->
-<p>
-  <img src="res/MLPClassifier_1_1.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_1_2.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_1_3.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_1_4.png" width="24%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/MLPClassifier_1_1.png" width="100%"/><br>
+      <b>MLPC ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/MLPClassifier_1_2.png" width="100%"/><br>
+      <b>MLPC ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/MLPClassifier_1_3.png" width="100%"/><br>
+      <b>MLPC ALLNBA</b>
+    </td>
+  </tr>
+</table>
 
 <!-- MLPClassifier dla ROOKIE -->
-<p>
-  <img src="res/MLPClassifier_2_1.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_2_2.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_2_3.png" width="24%" style="display:inline-block;"/>
-  <img src="res/MLPClassifier_2_4.png" width="24%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/MLPClassifier_2_1.png" width="100%"/><br>
+      <b>MLPC ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/MLPClassifier_2_2.png" width="100%"/><br>
+      <b>MLPC ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/MLPClassifier_2_3.png" width="100%"/><br>
+      <b>MLPC ROOKIE</b>
+    </td>
+  </tr>
+</table>
 
 <!-- KNNC dla ALLNBA -->
-<p>
-  <img src="res/KNNC_1_1.png" width="24%" style="display:inline-block;"/>
-  <img src="res/KNNC_1_2.png" width="24%" style="display:inline-block;"/>
-  <img src="res/KNNC_1_3.png" width="24%" style="display:inline-block;"/>
-  <img src="res/KNNC_1_4.png" width="24%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/KNNC_1_1.png" width="100%"/><br>
+      <b>KNC ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/KNNC_1_2.png" width="100%"/><br>
+      <b>KNC ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/KNNC_1_3.png" width="100%"/><br>
+      <b>KNC ALLNBA</b>
+    </td>
+  </tr>
+</table>
 
 <!-- KNNC dla ROOKIE -->
-<p>
-  <img src="res/KNNC_2_1.png" width="24%" style="display:inline-block;"/>
-  <img src="res/KNNC_2_2.png" width="24%" style="display:inline-block;"/>
-  <img src="res/KNNC_2_3.png" width="24%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/KNNC_2_1.png" width="100%"/><br>
+      <b>KNC ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/KNNC_2_2.png" width="100%"/><br>
+      <b>KNC ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/KNNC_2_3.png" width="100%"/><br>
+      <b>KNC ROOKIE</b>
+    </td>
+  </tr>
+</table>
 
 <!-- AdaBoostClassifier dla ALLNBA -->
-<p>
-  <img src="res/AdaBoostClassifier_1_1.png" width="32%" style="display:inline-block;"/>
-  <img src="res/AdaBoostClassifier_1_2.png" width="32%" style="display:inline-block;"/>
-  <img src="res/AdaBoostClassifier_1_3.png" width="32%" style="display:inline-block;"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_1_1.png" width="100%"/><br>
+      <b>AdaBoost ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_1_1.png" width="100%"/><br>
+      <b>AdaBoost ALLNBA</b>
+    </td>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_1_1.png" width="100%"/><br>
+      <b>AdaBoost ALLNBA</b>
+    </td>
+  </tr>
+</table>
 
 <!-- AdaBoostClassifier dla ROOKIE -->
-<p>
-  <img src="res/AdaBoostClassifier_2_1.png" width="32%" style="display:inline-block;"/>
-  <img src="res/AdaBoostClassifier_2_2.png" width="32%" style="display:inline-block;"/>
-  <img src="res/AdaBoostClassifier_2_3.png" width="32%" style="display:inline-block;"/>
-</p>
-
-
+<table>
+  <tr>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_2_1.png" width="100%"/><br>
+      <b>AdaBoost ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_2_2.png" width="100%"/><br>
+      <b>AdaBoost ROOKIE</b>
+    </td>
+    <td align="center">
+      <img src="res/AdaBoostClassifier_2_3.png" width="100%"/><br>
+      <b>AdaBoost ROOKIE</b>
+    </td>
+  </tr>
+</table>
 
 
 
