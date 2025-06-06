@@ -30,3 +30,90 @@ def show_heatmap(y_test: np.ndarray, y_pred: np.ndarray):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm_digits, display_labels=labels_to_show)
     disp.plot(cmap="cividis")
     plt.show()
+
+
+def calculate_correlations(df ,top=20):
+    target='result_top_five'
+
+    # Wybierz tylko kolumny numeryczne
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    
+    # Usuń z cech identyfikatory i wynik
+    exclude = ['PLAYER_ID', 'SEASON', target]
+    features = [col for col in numeric_cols if col not in exclude]
+    
+    # Wylicz korelacje
+    corr = df[features + [target]].corr()[target].drop(target)
+    
+    # Posortuj malejąco po wartości bezwzględnej
+    corr_sorted = corr.abs().sort_values(ascending=False)
+    
+    # Wyświetl top cech (lub wszystkie jeśli top=None)
+    if top is not None:
+        print(corr_sorted.head(top))
+    else:
+        for feature, value in corr_sorted.items():
+            print(f'{feature}: {value:.4f}')
+
+
+
+def calculate_correlations_plot(df, top=20):
+    target = 'result_top_five'
+
+    # Wybierz tylko kolumny numeryczne
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    
+    # Usuń z cech identyfikatory i wynik
+    exclude = ['PLAYER_ID', 'SEASON', target]
+    features = [col for col in numeric_cols if col not in exclude]
+    
+    # Wylicz korelacje
+    corr = df[features + [target]].corr()[target].drop(target)
+    
+    # Posortuj malejąco po wartości bezwzględnej
+    corr_sorted = corr.abs().sort_values(ascending=False)
+
+    # Wyświetl wykres dla top cech
+    if top is not None:
+        corr_sorted = corr_sorted.head(top)
+    
+    plt.figure(figsize=(10, max(4, 0.4*len(corr_sorted))))
+    corr_sorted[::-1].plot(kind='barh')  # Odwróć, by najwyższa wartość była na górze
+    plt.title(f'Top {len(corr_sorted)} cech najbardziej skorelowanych z {target}')
+    plt.xlabel('Wartość bezwzględna korelacji')
+    plt.tight_layout()
+    plt.show()
+    
+
+
+def print_models_parameters(models):
+    for model in models:
+        print(type(model).__name__)
+        if type(model).__name__ == 'KNeighborsClassifier':
+            print(f'\t n_neighbors = {model.n_neighbors}')
+            print(f'\t weights = {model.weights}')
+            print(f'\t metric = {model.metric}')
+
+        elif type(model).__name__ == 'MLPClassifier':
+            print(f'\t hidden_layer_sizes = {model.hidden_layer_sizes}')
+            print(f'\t activation = {model.activation}')
+            print(f'\t solver = {model.solver}')
+            print(f'\t alpha = {model.alpha}')
+            print(f'\t max_iter = {model.max_iter}')
+            print(f'\t random_state = {model.random_state}')
+            print(f'\t early_stopping = {model.early_stopping}')
+
+        elif type(model).__name__ == 'LogisticRegression':
+            print(f'\t n_neighbors = {model.max_iter}')
+            print(f'\t weights = {model.solver}')
+            print(f'\t metric = {model.random_state}')
+
+        elif type(model).__name__ == 'RandomForestClassifier':
+            print(f'\t n_estimators = {model.n_estimators}')
+            print(f'\t metric = {model.random_state}')
+
+        elif type(model).__name__ == 'AdaBoostClassifier':
+            print(f'\t learning_rate = {model.learning_rate}')
+            print(f'\t random_state = {model.random_state}')
+            print(f'\t n_estimators = {model.n_estimators}')
+
