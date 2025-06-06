@@ -7,26 +7,26 @@ w głównym pliku nba_predict.py Natomiast, gdy chcemy wykonać uczenie nowych m
   
 
 * Przygotowanie danych:  
-Dane do zbioru dancy zostały pobrane zarówno z API NBA oraz ze strony https://www.basketball-reference.com porałem zaawansowane statystyki graczy.  
+Dane do zbioru danych zostały pobrane zarówno z API NBA oraz ze strony https://www.basketball-reference.com pobrałem zaawansowane statystyki graczy.  
 
 
-Przygotowanie bazy danych w plikach csv z podziałem na ALLNBA i ROOKIE dokonałem za pomocą funkcji dostępnych w pliku prepare_datesets.py  
+Przygotowanie bazy danych w plikach csv z podziałem na ALLNBA i ROOKIE dokonałem za pomocą funkcji dostępnych w pliku prepare_datasets.py  
 
 
-Następnie już w samym kodzie nba_predict.py po wczytaniu bazy danych odrzucałem zbędne cechy takie jak: PLAYER_ID, NICKNAME, TEAM_ID, TEAM_ABBREVIATION, oraz wszystkie cechy z końcówką _RANK, ponieważ są to duplikaty inforamcji, gdzie surowe dane zostały zamienione na ranking.  
+Następnie już w samym kodzie nba_predict.py po wczytaniu bazy danych odrzucałem zbędne cechy takie jak: PLAYER_ID, NICKNAME, TEAM_ID, TEAM_ABBREVIATION, oraz wszystkie cechy z końcówką _RANK, ponieważ są to duplikaty informacji, gdzie surowe dane zostały zamienione na ranking.  
 
-Pobrane dane nie zawierały braków, więc nie było koniecznościu odrzucania lub uzupełniania. Jedyne braki jakie wystąpiły to brak wszystkich zawodników statystykach zaawansowanych, ale tutaj można podjąć prostą decycję, że skoro dany gracz nie posiada statystyk zaawansowanych to tym bardziej nie uzyskał żandej nominacji.  
+Pobrane dane nie zawierały braków, więc nie było konieczności odrzucania lub uzupełniania. Jedyne braki jakie wystąpiły to brak wszystkich zawodników w statystykach zaawansowanych, ale tutaj można podjąć prostą decyzję, że skoro dany gracz nie posiada statystyk zaawansowanych to tym bardziej nie uzyskał żadnej nominacji.  
 
-Sprawdziłem również korelację wszystkich cech. Niektóre cechy nie wpływały w żaden sposób na wynik przypisania do dowonlej piątki. Końcowo zostawiłem 55 cech.  
+Sprawdziłem również korelację wszystkich cech. Niektóre cechy nie wpływały w żaden sposób na wynik przypisania do dowolnej piątki. Końcowo zostawiłem 55 cech.  
 <img src="res/korelacja_cech.png" alt="korelacja" width="400"/>
 
-Cecha PLAYER_NAME to indentyfikator, który również będzie wartością wyjściową wprowadzaną jako wynik do pierwszych piątek. Oczywiście cecha ta jest pomijana w procesie uczenia i predykcji.  
+Cecha PLAYER_NAME to identyfikator, który również będzie wartością wyjściową wprowadzaną jako wynik do pierwszych piątek. Oczywiście cecha ta jest pomijana w procesie uczenia i predykcji.  
 
-Cecha GP oznacza liczbę rozegranych meczy. Sprawdziłem ile rozegrali meczy zawodnicy w sezonach do 2024, który otrzymali noiminacje do pierwszych piątek i z pewnym zapasem wyznaczyłem granice odrzucania graczy, którzy rozegrali mniej niż 40 meczy dla ALLNBA i 20 meczy dla ROOKIE.  
+Cecha GP oznacza liczbę rozegranych meczy. Sprawdziłem ile rozegrali meczy zawodnicy w sezonach do 2024, który otrzymali nominacje do pierwszych piątek i z pewnym zapasem wyznaczyłem granice odrzucania graczy, którzy rozegrali mniej niż 40 meczy dla ALLNBA i 20 meczy dla ROOKIE.  
 
-Cecha POS oznaczała pozycję na której grali zawodnicy. Uzględnianie tej cechy dla ROOKIE tylko pogarszało wynik, więc dla nich jest wyrzucana. Natomiast dla ALLNBA dokonałem klasyfikacji na zmienne numeryczne przez słownik PF,SF = 1, C = 2, SG,PG = 3. Początkowo próbowałem zastosować limit zawodników na danych pozycjach przy umieszczaniu ich w piątkach, ale kończyło się tym, że druga i trzecia piątka nie była wypełniana. Końcowo porzuciłem ograniczanie dobierania graczy do piątek po zakończeniu predykcji, ponieważ i tak nie wpływało to na końcową liczbę przewidzianych porawidłowo zawodników, a przynajmniej posiadałem wypełnione drużyny.  
+Cecha POS oznaczała pozycję na której grali zawodnicy. Uzględnianie tej cechy dla ROOKIE tylko pogarszało wynik, więc dla nich jest wyrzucana. Natomiast dla ALLNBA dokonałem klasyfikacji na zmienne numeryczne przez słownik PF,SF = 1, C = 2, SG,PG = 3. Początkowo próbowałem zastosować limit zawodników na danych pozycjach przy umieszczaniu ich w piątkach, ale kończyło się tym, że druga i trzecia piątka nie była wypełniana. Końcowo porzuciłem ograniczanie dobierania graczy do piątek po zakończeniu predykcji, ponieważ i tak nie wpływało to na końcową liczbę przewidzianych prawidłowo zawodników, a przynajmniej posiadałem wypełnione drużyny.  
 
-Wysztkie dane w cechach normalizowałem przez StandardScaler(), ponirważ dawało to najlepszy wynik w porównaniu z brakiem normalizacji i z wykorzystaniem MinMaxScaler().  
+Wszystkie dane w cechach normalizowałem przez StandardScaler(), ponieważ dawało to najlepszy wynik w porównaniu z brakiem normalizacji i z wykorzystaniem MinMaxScaler().  
 
 Przy przygotowaniu danych do uczenia próbowałem wykorzystać PCA() do odrzucenia mniej istotnych cech, ale tylko pogarszało to wynik.  
 
