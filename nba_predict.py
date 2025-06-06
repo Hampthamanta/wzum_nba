@@ -268,13 +268,13 @@ def perpare_and_train(df_, who = 'ALLNBA', test_season=2025, loaded_models=[]):
     third_team = []
     players_in_team = set()
 
-    print('\n\n', '=-'*20)
-    print(votes_for_first_team)
-    print('=-'*20)
-    print(votes_for_second_team)
-    print('=-'*20)
-    print(votes_for_third_team)
-    print('=-'*20, '\n\n')
+    # print('\n\n', '=-'*20)
+    # print(votes_for_first_team)
+    # print('=-'*20)
+    # print(votes_for_second_team)
+    # print('=-'*20)
+    # print(votes_for_third_team)
+    # print('=-'*20, '\n\n')
 
     if who == 'ALLNBA':
         first_team  = fill_team_with_position_limit(votes_for_first_team,  df_data, players_in_team)
@@ -357,11 +357,11 @@ def main():
         with open('models/models_rookie_r0.80%_2025-05-26.pkl', 'rb') as f:
             loaded_models_rookie = pickle.load(f)
 
-        print('=='*20)
-        print_models_parameters(loaded_models_allnba)
-        print('=='*20)
-        print_models_parameters(loaded_models_rookie)
-        print('=='*20)
+        # print('=='*20)
+        # print_models_parameters(loaded_models_allnba)
+        # print('=='*20)
+        # print_models_parameters(loaded_models_rookie)
+        # print('=='*20)
     else:
         loaded_models_allnba = []
         loaded_models_rookie = []
